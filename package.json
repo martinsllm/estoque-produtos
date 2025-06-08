@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --exec ts-node ./src/index.ts",
-    "start": "node ./build/index.js"
+    "start": "node ./build/index.js",
+    "migrate": "npx prisma migrate dev"
   },
   "devDependencies": {
     "@types/node": "^22.15.30",
@@ -15,6 +16,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@prisma/client": "^6.9.0"
+    "@prisma/client": "^6.9.0",
+    "zod": "^3.25.56"
   }
 }
