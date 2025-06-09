@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { Product } from "../../domain/product/entity/product"
 import { ProductGateway } from "../../domain/product/gateway/product.gateway"
+import { NotFoundError } from "../api/middlewares/errors/helpers/api-errors"
 
 export class ProductRepositoryPrisma implements ProductGateway {
     private constructor(private readonly prismaClient: PrismaClient) {}

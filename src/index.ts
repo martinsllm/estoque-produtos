@@ -12,7 +12,7 @@ const createProductUsecase = CreateProductUsecase.create(
 
 const createProductRoute = CreateProductRoute.create(createProductUsecase)
 
-function main() {
+async function main() {
     const port = Number(process.env.PORT)
 
     const api = ApiExpress.create([createProductRoute])
