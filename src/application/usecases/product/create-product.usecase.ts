@@ -24,13 +24,7 @@ export class CreateProductUsecase
     ): Promise<CreateProductOutputDto> {
         CreateProductSchema.parse(input)
 
-        if (!input.quantity) input.quantity = 0
-
-        const product = Product.create({
-            name: input.name,
-            price: input.price,
-            quantity: input.quantity,
-        })
+        const product = Product.create(input)
 
         await this.productGateway.save(product)
 
