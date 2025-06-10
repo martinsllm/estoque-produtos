@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
-import { Product } from "../../domain/product/entity/product"
+import { Product, ProductProps } from "../../domain/product/entity/product"
 import { ProductGateway } from "../../domain/product/gateway/product.gateway"
+import { NotFoundError } from "../api/middlewares/errors/helpers/api-errors"
 
 export class ProductRepositoryPrisma implements ProductGateway {
     private constructor(private readonly prismaClient: PrismaClient) {}
@@ -33,16 +34,33 @@ export class ProductRepositoryPrisma implements ProductGateway {
         })
 
         const productList = products.map((p: any) => {
-            const product = Product.with({
-                id: p.id,
-                name: p.name,
-                price: p.price,
-                quantity: p.quantity,
-            })
-
+            const product = this.present(p)
             return product
         })
 
         return productList
+    }
+
+    public async listOne(id: string): Promise<Product> {
+        const product = await this.prismaClient.product.findFirst({
+            where: { id },
+        })
+
+        if (!product) throw new NotFoundError("Product Not Found")
+
+        const productObject = this.present(product)
+
+        return productObject
+    }
+
+    private present(data: ProductProps) {
+        const product = Product.with({
+            id: data.id,
+            name: data.name,
+            price: data.price,
+            quantity: data.quantity,
+        })
+
+        return product
     }
 }
